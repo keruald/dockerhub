@@ -4,6 +4,11 @@ namespace Keruald\DockerHub\Build;
 
 use Keruald\DockerHub\DockerHubImage as Image;
 
+use Keruald\DockerHub\Build\Payloads\AllBuildPayload;
+use Keruald\DockerHub\Build\Payloads\DockerTagBuildPayload;
+use Keruald\DockerHub\Build\Payloads\SourceRepositoryBranchBuildPayload;
+use Keruald\DockerHub\Build\Payloads\SourceRepositoryTagBuildPayload;
+
 /**
  * Represents a trigger for a new build on the Docker Hub registry.
  */
@@ -54,6 +59,49 @@ class TriggerBuild {
     public function getTriggerUrl () {
         return $this->image->getRegistryUrl()
             . '/trigger/' . $this->token . '/';
+    }
+
+    ///
+    /// Payloads to specify what to build
+    ///
+
+    /**
+     * Gets a payload to build all branch/tag.
+     *
+     * @return Keruald\DockerHub\Build\Payloads\AllBuildPayload
+     */
+    public function getPayloadForAll () {
+        return new AllBuildPayload;
+    }
+
+    /**
+     * Gets a payload to build the specified Docker tag.
+     *
+     * @param string $tag
+     * @return Keruald\DockerHub\Build\Payloads\DockerTagBuildPayload
+     */
+    public function getPayloadForDockerTag ($tag) {
+        return new DockerTagBuildPayload($tag);
+    }
+
+    /**
+     * Gets a payload to build the specified repository branch.
+     *
+     * @param string $branch
+     * @return Keruald\DockerHub\Build\Payloads\SourceRepositoryBranchBuildPayload
+     */
+    public function getPayloadForSourceRepositoryBranch ($branch) {
+        return new SourceRepositoryBranchBuildPayload($branch);
+    }
+
+    /**
+     * Gets a payload to build the specified repository tag.
+     *
+     * @param string $tag
+     * @return Keruald\DockerHub\Build\Payloads\SourceRepositoryTagBuildPayload
+     */
+    public function getPayloadForSourceRepositoryTag ($tag) {
+        return new SourceRepositoryTagBuildPayload($tag);
     }
 
 }
