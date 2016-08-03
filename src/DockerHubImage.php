@@ -9,6 +9,11 @@ use Keruald\DockerHub\Build\TriggerBuild;
  */
 class DockerHubImage extends DockerImage {
 
+    /**
+     * Gets the URL to the image on the registry.
+     *
+     * @return string
+     */
     public function getRegistryUrl () {
         return "https://registry.hub.docker.com/u/$this->user/$this->image";
     }
