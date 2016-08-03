@@ -5,7 +5,7 @@ namespace Keruald\DockerHub\Build;
 use Keruald\DockerHub\DockerHubImage as Image;
 
 /**
- * this classe represents a trigger for a new build on the Docker Hub registry.
+ * Represents a trigger for a new build on the Docker Hub registry.
  */
 class TriggerBuild {
 
