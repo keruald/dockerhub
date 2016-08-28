@@ -16,6 +16,18 @@ class DockerHubImageTest extends \PHPUnit_Framework_TestCase {
         $this->image = new DockerHubImage("acme", "foo");
     }
 
+    public function testLoadFromSlashNotation () {
+        $slashNotationImage = DockerHubImage::loadFromSlashNotation("acme/foo");
+        $this->assertEquals($slashNotationImage, $this->image);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testLoadFromSlashNotationWithInvalidArgument () {
+        DockerHubImage::loadFromSlashNotation("foo");
+    }
+
     public function testGetRegistryUrl () {
         $this->assertSame(
             "https://registry.hub.docker.com/u/acme/foo",
