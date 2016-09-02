@@ -7,6 +7,8 @@ use Keruald\DockerHub\Build\TriggerBuild;
 
 class DockerHubImageTest extends \PHPUnit_Framework_TestCase {
 
+    use WithMockHttpClient;
+
     /**
      * @var Keruald\DockerHub\DockerHubImage
      */
@@ -36,9 +38,10 @@ class DockerHubImageTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testGetTriggerBuild () {
+        $client = $this->mockHttpClient(200);
         $this->assertInstanceOf(
             TriggerBuild::class,
-            $this->image->getTriggerBuild('0000')
+            $this->image->getTriggerBuild($client, '0000')
         );
     }
 

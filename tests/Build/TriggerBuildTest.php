@@ -8,16 +8,25 @@ use Keruald\DockerHub\Build\Payloads\AllBuildPayload;
 use Keruald\DockerHub\Build\Payloads\DockerTagBuildPayload;
 use Keruald\DockerHub\Build\Payloads\SourceRepositoryBuildPayload;
 
+use Keruald\DockerHub\Tests\WithMockHttpClient;
+
 class TriggerBuildTest extends \PHPUnit_Framework_TestCase {
+
+    use WithMockHttpClient;
 
     /**
      * @var Keruald\DockerHub\Build\TriggerBuild
      */
     protected $trigger;
 
+    /**
+     * @var Keruald\DockerHub\DockerHubImage
+     */
+    protected $image;
+
     public function setUp () {
-        $image = new DockerHubImage("acme", "foo");
-        $this->trigger = new TriggerBuild($image, "0000");
+        $this->image = new DockerHubImage("acme", "foo");
+        $this->trigger = new TriggerBuild($this->image, "0000");
     }
 
     public function testGetTriggerUrl () {
@@ -56,5 +65,43 @@ class TriggerBuildTest extends \PHPUnit_Framework_TestCase {
         $this->assertSame($payload->source_type, "Tag");
         $this->assertSame($payload->source_name, "v1.1");
     }
+
+    ///
+    /// Overloads test
+    ///
+
+    /**
+     * @expectedException \BadMethodCallException
+     */
+    public function testMethodOverloadingForNonExistingMethod () {
+        $this->trigger->loremIpsum();
+    }
+
+    /**
+     * @expectedException \BadMethodCallException
+     */
+    public function testMethodOverloadingForNonExistingPayloadMethod () {
+        $this->trigger->sendPayloadForLoremIpsum();
+    }
+
+    ///
+    /// HTTP client tests
+    ///
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+     public function testPostWhenClientIsNull () {
+        $this->trigger->sendPayloadForAll();
+     }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+     public function testPostThrowsRuntimeExceptionWhenResponseIsNot200 () {
+        $mockClient = $this->mockHttpClient(500);
+        $trigger = new TriggerBuild($this->image, "0000", $mockClient);
+        $trigger->sendPayloadForAll();
+     }
 
 }

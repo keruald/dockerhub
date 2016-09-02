@@ -4,6 +4,8 @@ namespace Keruald\DockerHub;
 
 use Keruald\DockerHub\Build\TriggerBuild;
 
+use GuzzleHttp\ClientInterface;
+
 /**
  * Represents a DockerHub image.
  */
@@ -25,8 +27,17 @@ class DockerHubImage extends DockerImage {
      * @param string $token The token to authentify the build request
      * @return Keruald\DockerHub\Build\TriggerBuild
      */
-    public function getTriggerBuild ($token) {
+    public function getTriggerBuild (ClientInterface $client, $token) {
         return new TriggerBuild($this, $token);
+    }
+
+    /**
+     * Triggers a full build for this image.
+     *
+     * @param string $token The token to authentify the build request
+     */
+    public function triggerBuild (ClientInterface $client, $token) {
+        $this->getTriggerBuild($client, $token)->sendPayloadForAll();
     }
 
 }
