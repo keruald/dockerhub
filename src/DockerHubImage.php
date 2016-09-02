@@ -20,20 +20,26 @@ class DockerHubImage extends DockerImage {
         return "https://registry.hub.docker.com/u/$this->user/$this->image";
     }
 
+    ///
+    /// Factory methods to build a TriggerBuild instance or use it.
+    ///
+
     /**
      * Gets a trigger build for this image
      * to be able to prepare a build trigger payload.
      *
-     * @param string $token The token to authentify the build request
+     * @param \Guzzle\ClientInterface A HTTP client [optional]
+     * @param string $token The token to authentify the build request [optional]
      * @return Keruald\DockerHub\Build\TriggerBuild
      */
-    public function getTriggerBuild (ClientInterface $client, $token) {
-        return new TriggerBuild($this, $token);
+    public function getTriggerBuild (ClientInterface $client = null, $token = "") {
+        return new TriggerBuild($this, $token, $client);
     }
 
     /**
      * Triggers a full build for this image.
      *
+     * @param \Guzzle\ClientInterface A HTTP client
      * @param string $token The token to authentify the build request
      */
     public function triggerBuild (ClientInterface $client, $token) {
