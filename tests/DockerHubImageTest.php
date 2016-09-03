@@ -38,7 +38,7 @@ class DockerHubImageTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testGetTriggerBuild () {
-        $client = $this->mockHttpClient(200);
+        $client = self::mockHttpClient(200);
         $this->assertInstanceOf(
             TriggerBuild::class,
             $this->image->getTriggerBuild($client, '0000')

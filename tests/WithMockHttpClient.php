@@ -15,7 +15,7 @@ trait WithMockHttpClient {
       * @param int $httpResponseCode The HTTP response code to mock
       * @return \GuzzleHttp\Client
       */
-    protected function mockHttpClient ($httpResponseCode) {
+    protected static function mockHttpClient ($httpResponseCode = 200) {
         $handler = self::getCustomMockHttpClientHandler($httpResponseCode);
         return new Client(['handler' => $handler]);
     }
