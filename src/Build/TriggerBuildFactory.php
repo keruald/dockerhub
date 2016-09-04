@@ -71,7 +71,9 @@ class TriggerBuildFactory {
     }
 
     /**
-     * @return bool
+     * Determines if we've a token for the specified image.
+     *
+     * @return bool true if we've a token for this image; otherwise, false.
      */
     public function hasToken ($image) {
         return array_key_exists($image, $this->tokens);
@@ -81,6 +83,11 @@ class TriggerBuildFactory {
     /// Helper methods
     ///
 
+    /**
+     * Gets the token associated to an image.
+     *
+     * @return string
+     */
     protected function getToken ($image) {
         if ($this->hasToken($image)) {
             return $this->tokens[$image];
