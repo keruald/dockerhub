@@ -53,4 +53,12 @@ class TriggerBuildFactoryTest extends \PHPUnit_Framework_TestCase {
         $this->factory->build("acme/foo");
     }
 
+    public function testHasToken () {
+        $this->assertTrue($this->factory->hasToken("acme/foo"));
+    }
+
+    public function testHasTokenWhenWeDoNot () {
+        $this->assertFalse($this->factory->hasToken("acme/bar"));
+    }
+
 }

@@ -70,12 +70,19 @@ class TriggerBuildFactory {
         $this->getForImage($image)->sendPayloadForAll();
     }
 
+    /**
+     * @return bool
+     */
+    public function hasToken ($image) {
+        return array_key_exists($image, $this->tokens);
+    }
+
     ///
     /// Helper methods
     ///
 
     protected function getToken ($image) {
-        if (array_key_exists($image, $this->tokens)) {
+        if ($this->hasToken($image)) {
             return $this->tokens[$image];
         }
 
