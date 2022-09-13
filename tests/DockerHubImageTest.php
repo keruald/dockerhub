@@ -5,7 +5,9 @@ namespace Keruald\DockerHub\Tests;
 use Keruald\DockerHub\DockerHubImage;
 use Keruald\DockerHub\Build\TriggerBuild;
 
-class DockerHubImageTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class DockerHubImageTest extends TestCase {
 
     use WithMockHttpClient;
 
@@ -14,7 +16,7 @@ class DockerHubImageTest extends \PHPUnit_Framework_TestCase {
      */
     private $image;
 
-    public function setUp () {
+    public function setUp () : void {
         $this->image = new DockerHubImage("acme", "foo");
     }
 
@@ -23,10 +25,8 @@ class DockerHubImageTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($slashNotationImage, $this->image);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testLoadFromSlashNotationWithInvalidArgument () {
+        $this->expectException(\Exception::class);
         DockerHubImage::loadFromSlashNotation("foo");
     }
 

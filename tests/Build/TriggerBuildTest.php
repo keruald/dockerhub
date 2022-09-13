@@ -10,7 +10,9 @@ use Keruald\DockerHub\Build\Payloads\SourceRepositoryBuildPayload;
 
 use Keruald\DockerHub\Tests\WithMockHttpClient;
 
-class TriggerBuildTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class TriggerBuildTest extends TestCase {
 
     use WithMockHttpClient;
 
@@ -24,7 +26,7 @@ class TriggerBuildTest extends \PHPUnit_Framework_TestCase {
      */
     protected $image;
 
-    public function setUp () {
+    public function setUp () : void {
         $this->image = new DockerHubImage("acme", "foo");
         $this->trigger = new TriggerBuild($this->image, "0000");
     }
@@ -70,17 +72,13 @@ class TriggerBuildTest extends \PHPUnit_Framework_TestCase {
     /// Overloads test
     ///
 
-    /**
-     * @expectedException \BadMethodCallException
-     */
     public function testMethodOverloadingForNonExistingMethod () {
+        $this->expectException(\BadMethodCallException::class);
         $this->trigger->loremIpsum();
     }
 
-    /**
-     * @expectedException \BadMethodCallException
-     */
     public function testMethodOverloadingForNonExistingPayloadMethod () {
+        $this->expectException(\BadMethodCallException::class);
         $this->trigger->sendPayloadForLoremIpsum();
     }
 
@@ -88,17 +86,13 @@ class TriggerBuildTest extends \PHPUnit_Framework_TestCase {
     /// HTTP client tests
     ///
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
      public function testPostWhenClientIsNull () {
+        $this->expectException(\InvalidArgumentException::class);
         $this->trigger->sendPayloadForAll();
      }
 
-    /**
-     * @expectedException \RuntimeException
-     */
      public function testPostThrowsRuntimeExceptionWhenResponseIsNot200 () {
+        $this->expectException(\RuntimeException::class);
         $mockClient = $this->mockHttpClient(500);
         $trigger = new TriggerBuild($this->image, "0000", $mockClient);
         $trigger->sendPayloadForAll();

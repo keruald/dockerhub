@@ -4,7 +4,9 @@ namespace Keruald\DockerHub\Tests\Build\Payloads;
 
 use Keruald\DockerHub\Build\Payloads\SourceRepositoryBuildPayload;
 
-class SourceRepositoryBuildPayloadTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class SourceRepositoryBuildPayloadTest extends TestCase {
 
     public function testIsValidType () {
         $this->assertTrue(SourceRepositoryBuildPayload::isValidType('Tag'));
@@ -14,10 +16,8 @@ class SourceRepositoryBuildPayloadTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse(SourceRepositoryBuildPayload::isValidType(null));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInvalidTypeThrowException () {
+        $this->expectException(\InvalidArgumentException::class);
         $mock = new NotExistingObjectBuildPayloadMock();
     }
 

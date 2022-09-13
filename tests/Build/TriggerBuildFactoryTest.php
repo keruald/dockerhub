@@ -8,7 +8,9 @@ use Keruald\DockerHub\Build\TriggerBuildFactory;
 
 use Keruald\DockerHub\Tests\WithMockHttpClient;
 
-class TriggerBuildFactoryTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class TriggerBuildFactoryTest extends TestCase {
 
     use WithMockHttpClient;
 
@@ -17,7 +19,7 @@ class TriggerBuildFactoryTest extends \PHPUnit_Framework_TestCase {
      */
     protected $factory;
 
-    public function setUp () {
+    public function setUp () : void {
         $client = self::mockHttpClient();
         $tokens = self::mockTokens();
         $this->factory = new TriggerBuildFactory($client, $tokens);
@@ -39,10 +41,8 @@ class TriggerBuildFactoryTest extends \PHPUnit_Framework_TestCase {
         );
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testGetForImageWithoutToken () {
+        $this->expectException(\Exception::class);
         $this->factory->getForImage("acme/bar");
     }
 
@@ -51,6 +51,7 @@ class TriggerBuildFactoryTest extends \PHPUnit_Framework_TestCase {
         // We don't need to test the sendPayloadForAll method.
         // So, we only need to check there is no exception or error.
         $this->factory->build("acme/foo");
+        $this->expectNotToPerformAssertions();
     }
 
     public function testHasToken () {
